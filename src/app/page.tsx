@@ -2,6 +2,7 @@ import { SquareArrowRight } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Container } from '@/components/container';
+import { GameCard } from '@/components/GameCard';
 import { Input } from '@/components/input';
 import { GameProps } from '@/utils/types/game';
 
@@ -18,8 +19,21 @@ async function getDalyGame() {
   }
 }
 
+async function getGamesData() {
+  try {
+    const res = await fetch(`${process.env.NEXT_API_URL}/next-api/?api=games`, {
+      next: { revalidate: 320 },
+    });
+
+    return res.json();
+  } catch (err) {
+    throw new Error('Falha ao buscar os jogos do dia');
+  }
+}
+
 export default async function Home() {
   const dalyGame: GameProps = await getDalyGame();
+  const data: GameProps[] = await getGamesData();
 
   return (
     <main className="w-full">
@@ -40,7 +54,7 @@ export default async function Home() {
                 priority={true}
                 quality={100}
                 fill={true}
-                className="max-h-96 object-cover rounded-lg opacity-50 hover:opacity-100 transition-all duration-300 ease-in-out"
+                className="max-h-96 object-cover rounded-lg opacity-50 hover:opacity-100 transition-all duration-300"
                 sizes="(max-with: 768px) 100vw, (max-width: 1200px) 33vw"
               />
             </div>
@@ -48,6 +62,14 @@ export default async function Home() {
         </Link>
 
         <Input />
+
+        <h2 className="text-lg font-bold mt-8 mb-5">Jogos para conhecer</h2>
+
+        <section className="grid gap-7 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+          {data.map((item) => (
+            <GameCard key={item.id} data={item} />
+          ))}
+        </section>
       </Container>
     </main>
   );
