@@ -1,8 +1,14 @@
 import { Share2 } from 'lucide-react';
+import { Metadata } from 'next';
 import Image from 'next/image';
 import { Container } from '@/components/container';
 import userImg from '../../../public/user.png';
 import { FavoriteCard } from './components/favorite';
+
+export const metadata: Metadata = {
+  title: 'Perfil - Games',
+  description: 'Perfil de Gabriel Felix.',
+};
 
 export default function Profile() {
   return (

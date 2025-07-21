@@ -6,9 +6,14 @@ import { useState } from 'react';
 export function FavoriteCard() {
   const [input, setInput] = useState('');
   const [showInput, setShowInput] = useState(false);
+  const [gameName, setGameName] = useState('');
 
   function handleButton() {
     setShowInput(!showInput);
+
+    if (input !== '') {
+      setGameName(input);
+    }
 
     setInput('');
   }
@@ -36,7 +41,14 @@ export function FavoriteCard() {
         </button>
       )}
 
-      <p className="font-bold text-white">Adicionar jogo</p>
+      {gameName && (
+        <div>
+          <span className="text-white">Jogo Favorito:</span>
+          <p className="font-bold text-white">{gameName}</p>
+        </div>
+      )}
+
+      {!gameName && <p className="font-bold text-white">Adicionar jogo</p>}
     </div>
   );
 }
